@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soiphone</title>
+    <style>
+        body { margin: 0; padding: 0; background-color: #1a1a1a; font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; color: white; overflow: hidden; }
+        .phone-container { width: 100%; max-width: 400px; height: 100vh; max-height: 850px; background: url('https://unsplash.com') no-repeat center center; background-size: cover; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.5); overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 40px 20px; box-sizing: border-box; }
+        .lock-screen { display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; justify-content: space-around; }
+        .title { font-size: 20px; font-weight: 500; margin-top: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .dots-container { display: flex; gap: 15px; margin: 20px 0; }
+        .dot { width: 12px; height: 12px; border: 2px solid white; border-radius: 50%; transition: background 0.2s; }
+        .dot.filled { background-color: white; }
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+        .key { width: 75px; height: 75px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; cursor: pointer; user-select: none; transition: background 0.1s; }
+        .key:active { background: rgba(255, 255, 255, 0.5); }
+        .home-screen { display: none; width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="lock-screen" id="lockScreen">
+            <div class="title">Enter Passcode</div>
+            <div class="dots-container"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            <div class="keypad">
+                <div class="key" onclick="pressKey('1')">1</div><div class="key" onclick="pressKey('2')">2</div><div class="key" onclick="pressKey('3')">3</div>
+                <div class="key" onclick="pressKey('4')">4</div><div class="key" onclick="pressKey('5')">5</div><div class="key" onclick="pressKey('6')">6</div>
+                <div class="key" onclick="pressKey('7')">7</div><div class="key" onclick="pressKey('8')">8</div><div class="key" onclick="pressKey('9')">9</div>
+                <div></div><div class="key" onclick="pressKey('0')">0</div><div class="key" style="font-size: 16px;" onclick="clearKeys()">ลบ</div>
+            </div>
+        </div>
+        <div class="home-screen" id="homeScreen">
+        </div>
+    </div>
+    <script>
+        const CORRECT_PIN = "6312"; 
+        let currentInput = "";
+        function pressKey(num) { if (currentInput.length < 4) { currentInput += num; updateDots(); if (currentInput.length === 4) { setTimeout(checkPin, 200); } } }
+        function clearKeys() { currentInput = ""; updateDots(); }
+        function updateDots() { const dots = document.querySelectorAll('.dot'); dots.forEach((dot, index) => { if (index < currentInput.length) { dot.classList.add('filled'); } else { dot.classList.remove('filled'); } }); }
+        function checkPin() { if (currentInput === CORRECT_PIN) { document.getElementById('lockScreen').style.display = 'none'; document.getElementById('homeScreen').style.display = 'block'; } else { clearKeys(); } }
+    </script>
+</body>
+</html>
